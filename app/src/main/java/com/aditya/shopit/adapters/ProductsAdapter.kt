@@ -16,7 +16,7 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
     private lateinit var binding: ExampleItemBinding
 
     interface ItemClickedListener{
-        fun onItemClicked()
+        fun onItemClicked(product: Products)
     }
 
     class ProductsViewHolder(val binding: ExampleItemBinding,val context: Context) : RecyclerView.ViewHolder(binding.root) {
@@ -29,13 +29,14 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
             binding.tvDescription.text = product.description
             binding.tvPrice.text = "$$price"
             binding.tvTitle.text = product.title
-            Picasso.with(context).load(product.image).into(binding.ivItem)
+            Picasso.get().load(product.image).into(binding.ivItem)
+//            Picasso.with(context).load(product.image).into(binding.ivItem)
         }
     }
 
-        private fun loadImage(product: Products) {
-            Picasso.with(context).load(product.image).into(binding.ivItem)
-        }
+//        private fun loadImage(product: Products) {
+//            Picasso.get().load(product.image).into(binding.ivItem)
+//        }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
@@ -50,7 +51,7 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
         holder.bindData(products[position])
         holder.binding.clExample.setOnClickListener {
-            itemclicked.onItemClicked()
+            itemclicked.onItemClicked(products[position])
         }
     }
 

@@ -9,25 +9,37 @@
         android:id="@+id/listFragment"
         android:name="com.aditya.shopit.fragments.list.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:popUpToInclusive="false" />
+
+
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.aditya.shopit.fragments.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_detail">
         <action
             android:id="@+id/action_detailFragment_to_editFragment"
             app:destination="@id/editFragment" />
+        <argument
+            android:name="productId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_detailFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/detailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
         android:name="com.aditya.shopit.fragments.edit.EditFragment"
         android:label="fragment_edit"
-        tools:layout="@layout/fragment_edit" >
+        tools:layout="@layout/fragment_edit">
         <action
             android:id="@+id/action_editFragment_to_listFragment"
             app:destination="@id/listFragment" />
