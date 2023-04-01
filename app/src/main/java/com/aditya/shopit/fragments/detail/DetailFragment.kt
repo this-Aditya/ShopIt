@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavArgs
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aditya.shopit.databinding.FragmentDetailBinding
 import com.aditya.shopit.models.Products
@@ -46,6 +47,11 @@ class DetailFragment : Fragment() {
             binding.tvCategorydf.text = product.category
             binding.tvPricedf.text = "$$price"
             Picasso.get().load(product.image).into(binding.ivDF)
+            binding.btnEditdf.setOnClickListener {
+                val action = DetailFragmentDirections.actionDetailFragmentToEditFragment(product)
+                Log.i(TAG, "$productId sending value via navArgs from detail to edit fragments.")
+                view.findNavController().navigate(action)
+            }
         })
         viewModel.error.observe(viewLifecycleOwner, Observer {error->
             if (error==null){
