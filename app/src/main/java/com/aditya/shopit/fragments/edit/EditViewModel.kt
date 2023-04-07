@@ -37,21 +37,26 @@ class EditViewModel : ViewModel() {
         } }
 
     fun patchProduct(productId: Int, description: String, price: Float) {
-        try {
-            viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
                 Log.i(TAG, Thread.currentThread().name)
                 withContext(Dispatchers.Main){
-                    _stateStatus.value = States.READY}
+                    _stateStatus.value = States.READY
+                }
                 delay(500)
                 val patchedProduct = PatchProduct(price, description)
                 RetrofitInstance.api.patchProduct(productId, patchedProduct)
                 withContext(Dispatchers.Main){
-                    _stateStatus.value = States.SENT}            }
-        } catch (e: Exception) {
-            Log.i(TAG, "patchProduct: ${e.message}")
-            _stateStatus.value = States.ERROR
+                    _stateStatus.value = States.SENT
+                }
+            } catch (e: Exception) {
+                Log.i(TAG, "patchProduct: ${e.message}")
+                withContext(Dispatchers.Main){
+                _stateStatus.value = States.ERROR}
+            }
         }
     }
+
 
     fun postProduct(product:Products) {
          try {
