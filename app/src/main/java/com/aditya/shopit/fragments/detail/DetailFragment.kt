@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aditya.shopit.databinding.FragmentDetailBinding
 import com.aditya.shopit.models.Products
+import com.aditya.shopit.repository.ShopRepository
 import com.squareup.picasso.Picasso
 
 private const val TAG = "DetailFragment"
@@ -21,7 +22,9 @@ private const val TAG = "DetailFragment"
 class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private val args: DetailFragmentArgs by navArgs();
-    lateinit var viewModel: DetailViewModel
+    private lateinit var viewModel: DetailViewModel
+    private lateinit var viewModelfactory: DetailViewModelFactory
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +38,9 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.i(TAG, "onViewCreated: ")
         val productId = args.productId
-        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        val repository = ShopRepository()
+        val viewModelfactory = DetailViewModelFactory(repository)
+        viewModel = ViewModelProvider(this,viewModelfactory).get(DetailViewModel::class.java)
 
         viewModel.getProduct(productId)
         Log.i(TAG, "Product ID $productId ")

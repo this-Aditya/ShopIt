@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aditya.shopit.adapters.ProductsAdapter
 import com.aditya.shopit.databinding.FragmentListBinding
 import com.aditya.shopit.models.Products
+import com.aditya.shopit.repository.ShopRepository
 
-private lateinit var binding: FragmentListBinding
-private lateinit var viewModel: ListViewModel
 private const val TAG = "ListFragment"
 
 class ListFragment : Fragment() {
+    private lateinit var binding: FragmentListBinding
+    private lateinit var viewModel: ListViewModel
+    private lateinit var viewmodelfactory:ListViewModelFactory
     private lateinit var adapter: ProductsAdapter
     private val shopingProducts = mutableListOf<Products>()
 
@@ -35,7 +37,9 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i(TAG, "onViewCreated: ")
-        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
+        val repository = ShopRepository()
+        viewmodelfactory = ListViewModelFactory(repository)
+        viewModel = ViewModelProvider(this,viewmodelfactory).get(ListViewModel::class.java)
 
         setupRecyclerView()
 

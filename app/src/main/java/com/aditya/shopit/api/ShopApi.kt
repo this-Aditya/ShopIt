@@ -2,24 +2,23 @@ package com.aditya.shopit.api
 
 import com.aditya.shopit.models.PatchProduct
 import com.aditya.shopit.models.Products
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.FieldMap
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ShopApi {
     @GET("products")
-    suspend fun getProducts(): List<Products>
+    suspend fun getProducts(): Response<List<Products>>
 
     @GET("products/{id}")
     suspend fun getProduct(
         @Path("id") productId: Int
-    ): Products
+    ): Response<Products>
 
     @PUT("products/{id}")
     suspend fun putProduct(
