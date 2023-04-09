@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.aditya.shopit.States
 import com.aditya.shopit.databinding.FragmentEditBinding
 import com.aditya.shopit.models.Products
+import com.aditya.shopit.repository.ShopRepository
 import com.squareup.picasso.Picasso
 
 class EditFragment : Fragment() {
@@ -31,19 +32,27 @@ class EditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var product: Products = args.Product
         binding.tvERROR.visibility = View.GONE
-        viewModel = ViewModelProvider(this).get(EditViewModel::class.java)
+        val repository = ShopRepository()
+        val viewModelFactory = EditViewModelfactory(repository)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(EditViewModel::class.java)
         Picasso.get().load(product.image).into(binding.ivDF)
         binding.tvCategorydf.text = product.category
         binding.tvTitiledf.text = product.title
         binding.etDescription.setText(product.description)
         binding.etPrice.setText(product.id.toString())
         binding.btnPut.setOnClickListener {
-            product.price = binding.etPrice.text.toString().toFloat()
+            try {
+                product.price = binding.etPrice.text.toString().toFloat()
+            }catch (e:NumberFormatException){
+                product.price = 0.0f}
             product.description = binding.etDescription.text.toString()
-            viewModel.putProduct(product)
-        }
+            viewModel.putProduct(product)}
+
         binding.btnPatch.setOnClickListener {
-            val price = binding.etPrice.text.toString().toFloat()
+            val price = try{binding.etPrice.text.toString().toFloat()}
+            catch (e:NumberFormatException){
+                0.0f
+            }
             val description = binding.etDescription.text.toString()
             viewModel.patchProduct(product.id,description,price)
         }

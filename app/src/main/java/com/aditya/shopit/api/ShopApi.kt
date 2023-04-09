@@ -30,7 +30,7 @@ interface ShopApi {
     suspend fun patchProduct(
         @Path("id") productId: Int,
         @Body params: PatchProduct
-    ): Products
+    ):PatchProduct
 
     @POST("products")
     suspend fun postProduct(
