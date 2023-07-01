@@ -19,7 +19,7 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
         fun onItemClicked(product: Products)
     }
 
-    class ProductsViewHolder(val binding: ExampleItemBinding,val context: Context) : RecyclerView.ViewHolder(binding.root) {
+    inner class ProductsViewHolder : RecyclerView.ViewHolder(binding.root) {
         fun bindData(product: Products) {
             val price = product.price.toString()
             val count = product.rating.count.toString()
@@ -41,7 +41,7 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         binding = ExampleItemBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ProductsViewHolder(binding,context)
+        return ProductsViewHolder()
     }
 
     override fun getItemCount(): Int {
@@ -50,7 +50,7 @@ class ProductsAdapter(private val context: Context,val itemclicked:ItemClickedLi
 
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
         holder.bindData(products[position])
-        holder.binding.clExample.setOnClickListener {
+        binding.clExample.setOnClickListener {
             itemclicked.onItemClicked(products[position])
         }
     }
